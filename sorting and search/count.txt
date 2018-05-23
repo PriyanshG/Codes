@@ -1,0 +1,28 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    long n,i,A[20],B[20],k=LONG_MIN,s=LONG_MAX,C[20];
+    cin>>n;
+    memset(C,0,sizeof(C));
+    for(i=0;i<n;i++)
+    {cin>>A[i];
+     C[A[i]]++;
+     s=min(s,A[i]);
+     k=max(k,A[i]);
+    }
+C[s]--;
+    for(i=s+1;i<=k;i++)
+    {
+      C[i]=C[i-1]+C[i];
+      cout<<i<<" "<<C[i]<<"\n";
+    }
+    for(i=0;i<n;i++)
+    {
+        B[C[A[i]]]=A[i];
+        C[A[i]]--;
+    }
+    for(i=0;i<n;i++)
+        cout<<B[i]<<" ";
+
+}

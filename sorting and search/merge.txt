@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+int A[10];
+void merg(int s,int m,int e)
+{
+   int l1=s,l2=m+1;
+    int i,B[10],k=0;
+   while(l1<=m && l2<=e)
+   {    if(A[l1]<A[l2])
+        B[k++]=A[l1++];
+       else if(A[l1]>A[l2])
+        B[k++]=A[l2++];
+
+   }
+   while(l1<=m)
+    B[k++]=A[l1++];
+   while(l2<=e)
+    B[k++]=A[l2++];
+   for(i=0;i<k;i++)
+    A[i+s]=B[i];
+}
+void merge_sort(int s,int e)
+{
+    if(s<e)
+    {
+        int m=(s+e)/2;
+        merge_sort(s,m);
+        merge_sort(m+1,e);
+        merg(s,m,e);
+    }
+}
+int main()
+{   int n,i;
+    cin>>n;
+    for(i=0;i<n;i++)
+        cin>>A[i];
+    merge_sort(0,n-1);
+    for(i=0;i<n;i++)
+        cout<<A[i];
+
+
+}
