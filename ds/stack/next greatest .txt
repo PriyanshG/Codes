@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define loop(i,a,n) for(i=a;i<n;i++)
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    map<long,long> s;
+    long A[10];
+    stack<long> S;
+    long i,n;
+    cin>>n;
+    loop(i,0,n)
+     cin>>A[i];
+    for(i=0;i<n;i++)
+    {
+        while(!S.empty() && S.top()<A[i])
+        {
+            s[S.top()]=A[i];
+            S.pop();
+        }
+        S.push(A[i]);
+
+    }
+    while(!S.empty())
+    {
+        s[S.top()]=-1;
+        S.pop();
+    }
+    loop(i,0,n)
+    cout<<s[A[i]]<<" ";
+}
