@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+
+typedef long long ll;
+
+
+long A[10]={0},T[100]={0};
+void build(long node,long s,long e)
+{
+    if(s==e)
+        T[node]=A[s];
+    else
+    {
+        long mid=(s+e)>>1;
+        build(2*node+1,s,mid);
+        build(2*node+2,mid+1,e);
+        T[node]=T[2*node+1]+T[2*node+2];
+    }
+}
+long find(long node,long s,long e,long a,long b)
+{   if(a>e || s>b)
+return 0;
+    if(s>=a && e<=b)
+        return T[node];
+    long p1,p2;
+    long mid=(s+e)>>1;
+    p1=find(2*node+1,s,mid,a,b);
+    p2=find(2*node+2,mid+1,e,a,b);
+    return p1+p2;
+
+}
+
+void update(long node,long s,long e,long a,long x)
+{
+    if(s==e)
+    {
+        A[a]=x;
+        T[node]=x;
+    }
+    else
+    {
+        long mid=(s+e)>>1;
+        if(s<=a && a<=mid)
+             update(2*node+1,s,mid,a,x);
+        else
+            update(2*node+2,mid+1,e,a,x) ;
+    //if(T[2*node]<T[node])
+    T[node]=T[2*node+1]+T[2*node+2];
+    }
+
+
+}
+
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    long n,q,i;
+    long a,b;
+    char c;
+    cin>>n>>q;
+    loop(i,0,n)
+     cin>>A[i];
+    build(0,0,n-1);
+    while(q--)
+    {
+        cin>>c;
+        if(c=='q')
+        {
+            cin>>a>>b;
+            long k=find(0,0,n-1,a-1,b-1);
+            cout<<k<<endl;
+        }
+        else
+        {
+            cin>>a>>b;
+            update(0,0,n-1,a-1,b);
+
+        }
+    }
+   // loop(i,0,7)
+     //cout<<T[i]<<endl;
+}

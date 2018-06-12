@@ -1,0 +1,92 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+
+
+typedef long long ll;
+
+struct trinode
+{
+    map<char,trinode *> child;
+    bool END;
+};
+
+trinode* getnode()
+{
+    ll i;
+    trinode *pnode=new trinode;
+    pnode->END=false;
+    /*loop(i,0,26)
+     pnode->children[i]=NULL;
+    */return pnode;
+}
+void insert(trinode *root,string s)
+{
+    ll i;
+    trinode *pcrawl=root;
+    loop( i,0,s.length())
+    {
+
+        if(pcrawl->child.find(s[i])==pcrawl->child.end())
+            pcrawl->child[s[i]]=getnode();
+        pcrawl=pcrawl->child[s[i]];
+    }
+    pcrawl->END=true;
+}
+bool search(trinode *root,string s)
+{   ll i;
+    trinode *pcrawl=root;
+    loop(i,0,s.length())
+    {
+        if(!pcrawl->child[s[i]])
+            return false;
+        pcrawl=pcrawl->child[s[i]];
+    }
+    return 1;//(pcrawl!=NULL && pcrawl->END);
+}
+void print(trinode *root,char s[],ll level)
+{
+        if(root->END)
+        {   s[level]='\0';
+            cout<<s<<endl;
+        }
+        for(auto it:root->child)
+        {
+            s[level]=it.first;
+            print(root->child[it.first],s,level+1);
+        }
+
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll n,i,q;
+    string s;;
+    trinode *root=getnode();
+    cin>>n;
+    loop(i,0,n)
+     {cin>>s;
+      insert(root,s);
+     }
+    /* cin>>q;
+     while(q--)
+     {
+        cin>>s;
+        if(search(root,s))
+            cout<<"YES\n";
+        else
+            cout<<"NO\n";
+     }
+     */
+//     string s;
+    char sr[20];
+     print(root,sr,0);
+
+
+}

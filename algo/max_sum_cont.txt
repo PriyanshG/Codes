@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+
+typedef long long ll;
+
+ll mss(ll A[],ll n)
+{
+   if(n==1)
+         return A[0];
+   ll m=n/2;
+   ll leftmss=mss(A,m);
+   ll rightmss=mss(A+m,n-m);
+   ll leftsum=LLONG_MIN,rightsum=LLONG_MIN,sum=0;
+   for(ll i=m;i<n;i++)
+   {
+       sum+=A[i];
+       rightsum=max(rightsum,sum);
+   }
+   sum=0;
+   for(ll i=0;i<=m-1;i++cha)
+   {
+       sum+=A[i];
+       leftsum=max(leftsum,sum);
+   }
+   ll ans=max(leftmss,rightmss);
+   return max(ans,leftsum+rightsum);
+
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll n,i,A[5];
+    cin>>n;
+    loop(i,0,n)
+     cin>>A[i];
+    cout<<mss(A,n);
+
+
+  /* while(A.size())
+    {
+        cout<<A.top().first<<" "<<A.top().second<<endl;
+        A.pop();
+    }
+  */ // loop(i,0,n)
+}

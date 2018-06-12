@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+ 
+long A[100050];
+void max_heapify(long i,long n)
+{
+ 
+    long larg,l=2*i;
+    long r=l+1;
+    if(l<=n && A[l]>A[i])
+        larg=l;
+    else
+        larg=i;
+    if(r<=n && A[r]>A[larg])
+        larg=r;
+    if(larg!=i)
+    {
+        swap(A[i],A[larg]);
+        max_heapify(larg,n);
+    }
+}
+void build(long n)
+{
+    for(long i=n/2;i>=1;i--)
+ 
+ 
+        max_heapify(i,n);
+}
+typedef long long ll;
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+ 
+    long n,m,ans=0,i;
+    cin>>n>>m;
+    loop(i,1,n+1)
+     cin>>A[i];
+ 
+    build(n);
+    loop(i,0,m)
+    {
+        ans+=A[1];
+        A[1]--;
+        max_heapify(1,n);
+    }
+    cout<<ans<<endl;
+   // loop(i,1,n+1)
+   //  cout<<A[i];
+}

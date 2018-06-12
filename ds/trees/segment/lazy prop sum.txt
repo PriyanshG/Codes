@@ -1,0 +1,106 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+
+typedef long long ll;
+ll A[6]={0},T[24]={0},U[24];
+void build(long node,long s,long e)
+{
+    if(s==e)
+    {
+        T[node]=A[s];
+    }
+    else
+    {
+        long mid=(s+e)>>1;
+        build(2*node,s,mid);
+        build(2*node+1,mid+1,e);
+        T[node]=(T[2*node]+T[2*node+1]);
+    }
+}
+long find(long node,long s,long e,long x,long y)
+{
+    if(x>e || y<s)
+        return 0;
+    if(U[node]!=0)
+    {
+        T[node]+=(e-s+1)*U[node];
+        if(s!=e)
+        {
+            U[2*node]+=U[node];
+            U[2*node+1]+=U[node];
+        }
+        U[node]=0;
+    }
+    if(s>=x && e<=y)
+         return T[node];
+    long mid=(s+e)>>1;
+    long p1=find(2*node,s,mid,x,y);
+    long p2=find(2*node+1,mid+1,e,x,y);
+    return (p1+p2);
+}
+void update(long node,long s,long e,long x,long y,long val)
+{
+
+    if(U[node]!=0)
+    {
+        T[node]+=(e-s+1)*U[node];
+    if(s!=e)
+    {
+        U[2*node]+=U[node];
+        U[2*node+1]+=U[node];
+    }
+    U[node]=0;
+    }
+    if(s>e || s>y || e<x)
+        return;
+
+    if(s>=x && e<=y)
+    {
+        T[node]+=(e-s+1)*val;
+        if(s!=e)
+        {
+            U[2*node]+=val;
+            U[2*node+1]+=val;
+        }
+        return;
+    }
+    long mid=(s+e)>>1;
+    update(2*node,s,mid,x,y,val);
+    update(2*node+1,mid+1,e,x,y,val);
+    T[node]=T[2*node]+T[2*node+1];
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    long i,n,x,y,q;
+    char c;
+    cin>>n>>q;
+    loop(i,1,n+1)
+     cin>>A[i];
+    build(1,1,n);
+    while(q--)
+    {
+        cin>>c;
+        if(c=='q')
+        {
+            cin>>x>>y;
+            long l=find(1,1,n,x,y);
+            cout<<l<<endl;
+        }
+        else
+        {long val;
+            cin>>x>>y>>val;
+            update(1,1,n,x,y,val);
+        }
+    }
+  //  loop(i,1,20)
+     //cout<<T[i]<<endl;
+
+}

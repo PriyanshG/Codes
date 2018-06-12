@@ -1,0 +1,95 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+
+typedef long long ll;
+
+
+long A[10]={0},T[100]={0};
+void build(long node,long s,long e)
+{
+     if(s==e)
+        T[node]=1;
+    else
+    {
+        long mid=(s+e)>>1;
+        build(2*node,s,mid);
+        build(2*node+1,mid+1,e);
+        T[node]=T[2*node]+T[2*node+1];
+    }
+}
+long find(long node,long s,long e,long k,long n)
+{   //if(s<0 || e>n-1 )
+    //    return -1;
+
+    if(s==e )
+    {
+        if(T[node]==k)
+            return s;
+        else
+            return -1;
+    }
+    long mid=(s+e)>>1;
+    long l=T[2*node];
+    if(k>l)
+        return find(2*node+1,mid+1,e,k-l,n);
+    else
+     return find(2*node,s,mid,k,n);
+
+}
+
+void update(long node,long s,long e,long x)
+{
+    if(s==e)
+    {
+        T[node]=0;
+    }
+    else
+    {
+        long mid=(s+e)>>1;
+        if(s<=x && x<=mid)
+             update(2*node,s,mid,x);
+        else
+            update(2*node+1,mid+1,e,x) ;
+    //if(T[2*node]<T[node])
+    T[node]=T[2*node]+T[2*node+1];
+    }
+
+
+}
+
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    long n,x,q,i;
+    long a,b;
+    long c;
+    cin>>n>>q;
+   // loop(i,0,n)
+     //A[i]=1;
+    build(1,1,n);
+    while(q--)
+    {
+        cin>>c;
+        if(c==1)
+        {
+            cin>>a;
+            long k=find(1,1,n,a,n);
+            cout<<k<<endl;
+        }
+        else
+        {
+            cin>>x;
+            update(1,1,n,x);
+
+        }
+    }
+   // loop(i,0,7)
+     //cout<<T[i]<<endl;
+}

@@ -1,0 +1,48 @@
+    #include<bits/stdc++.h>
+    using namespace std;
+    #define mem(A) memset(A,0,sizeof(A))
+    #define loop(i,a,n) for(i=a;i<n;i++)
+    #define pb push_back
+    #define mkp make_pair
+
+    typedef long long ll;
+
+    int main()
+    {   //freopen("input.txt", "r", stdin);
+        ios_base::sync_with_stdio(0);
+        cin.tie(NULL);
+        cout.tie(NULL);
+
+        ll A[]={3,2,-1,6,5};
+        ll n=5,q,i,x;
+        ll B[6]={0};
+        B[0]=0;
+        loop(i,0,n)
+        {
+            B[i+1]+=A[i];
+            x=i+1;
+            x=x+(x&-x);
+            while(x<=n)
+            {
+                B[x]+=A[i];
+                x=x+(x&-x);
+            }
+
+        }
+        cin>>q;
+        while(q--)
+        {
+            cin>>x;
+            ll s=B[x];
+            x=x-(x&-x);
+            while(x>0)
+            {
+                s+=B[x];
+                x=x-(x&-x);
+            }
+            cout<<s<<endl;
+        }
+        loop(i,0,6)
+            cout<<B[i]<<" ";
+
+    }
