@@ -1,0 +1,115 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+ 
+typedef long long ll;
+typedef pair<ll,ll> pll;
+ll A[100005],S[100005];
+
+    pair<ll,pll> P[100050];
+void init(ll n)
+{
+    ll i;
+    loop(i,0,n)
+    {
+        A[i]=i;
+        S[i]=1;
+    }
+ 
+}
+ll root(ll i)
+{
+    if(A[i]!=i)
+    {
+        A[i]=A[A[i]];
+        i=A[i];
+    }
+    return i;
+}
+void con(ll x,ll y)
+{
+    ll rx=root(x);
+    ll ry=root(y);
+    //A[rx]=A[ry];
+    if(rx!=ry)
+    {
+        if(S[rx]<S[ry])
+        {
+            A[rx]=A[ry];
+            S[ry]+=S[rx];
+        }
+        else
+        {
+            A[ry]=A[rx];
+            S[rx]+=S[ry];
+        }
+    }
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+ 
+    ll n,i,m,x,s=0,y,q,k,w;
+    map<pll,ll> M;
+    vector<ll> B;
+    cin>>n>>m;
+    init(n+1);
+    loop(i,0,m)
+    {
+        cin>>x>>y>>w;
+                P[i]=mkp(w,mkp(x,y));
+    }
+    sort(P,P+m);
+    priority_queue<ll,vector<ll>,greater<ll>> Q;
+    cin>>q;
+    while(q--)
+    {
+        cin>>w;
+        Q.push(w);
+    }
+    loop(i,0,m)
+    {
+        x=P[i].sec.fir;
+        y=P[i].sec.sec;
+        w=P[i].fir;
+        if(root(x)!=root(y))
+        {
+            B.pb(w);
+            con(x,y);
+        }
+    }
+    sort(all(B),greater<ll>());
+    ll j=0;
+    //sort(all(B),greater<ll>());
+    loop(i,0,B.size())
+    {
+ 
+     if(!Q.empty())
+     {
+         if(Q.top()<B[i])
+            {
+                s+=Q.top();
+             Q.pop();
+ 
+            }
+         else
+         {
+             s+=B[i];
+         }
+     }
+     else
+     s+=B[i];
+    }
+    cout<<s;
+}

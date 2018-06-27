@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+ll V[10005]={0};
+void prim(vector<pll> A[],ll x)
+{
+    priority_queue<pll,vector<pll>,greater<pll>> q;
+    ll y,i;
+    ll s=0;
+    pll p;
+    q.push(mkp(0,x));
+    while(!q.empty())
+    {
+        p=q.top();
+        q.pop();
+        x=p.sec;
+        if(V[x]==0)
+        {
+            s+=p.fir;
+            V[x]=1;
+            loop(i,0,A[x].size())
+            {
+                y=A[x][i].sec;
+                if(V[y]==0)
+                    q.push(A[x][i]);
+            }
+        }
+    }
+    cout<<s;
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll n,m,i,x,w,y;
+    cin>>n>>m;
+    vector<pll> A[n+1];
+    loop(i,0,m)
+    {
+        cin>>x>>y>>w;
+        A[x].pb(mkp(w,y));
+        A[y].pb(mkp(w,x));
+    }
+    prim(A,1);
+}

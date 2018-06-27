@@ -1,0 +1,111 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll n,m,i,q,j,k,x,y,w;
+    string s1,s2;
+    unordered_map<string,ll> M;
+    cin>>n>>m;
+    ll D[505][505],B[n][n];
+    loop(i,0,n)
+     loop(j,0,m)
+     if(i==j)
+        D[i][j]=0;
+     else
+        D[i][j]=LONG_MAX;
+    loop(i,0,n)
+     cin>>s1,M[s1]=i;
+    loop(i,0,m)
+    {
+        cin>>s1>>s2>>w;
+        x=M[s1];
+        y=M[s2];
+        D[x][y]=w;
+    }
+
+    loop(i,0,n)
+     loop(j,0,n)
+      if(D[i][j]==LONG_MAX || D[i][j]==0)
+         B[i][j]=n;
+      else
+        B[i][j]=i;
+cout<<"IB:\n";
+    loop(i,0,n)
+     {
+         loop(j,0,n)
+          cout<<B[i][j]<<" ";
+        cout<<endl;
+     }
+     cout<<"ID:\n";
+    loop(i,0,n)
+     {
+         loop(j,0,n)
+          cout<<D[i][j]<<" ";
+        cout<<endl;
+     }
+     loop(k,0,n)
+      loop(i,0,n)
+       loop(j,0,n)
+        if((D[i][k]!=LONG_MAX && D[k][j]!=LONG_MAX) && D[i][j]>D[i][k]+D[k][j])
+            B[i][j]=B[k][j],D[i][j]=D[i][k]+D[k][j];
+    cout<<endl;
+
+     cout<<"FD:\n";
+    loop(i,0,n)
+     {
+         loop(j,0,n)
+          cout<<D[i][j]<<" ";
+        cout<<endl;
+     }
+     cout<<endl;
+
+     cout<<"FB:\n";
+    loop(i,0,n)
+     {
+         loop(j,0,n)
+          cout<<B[i][j]<<" ";
+        cout<<endl;
+     }
+    cin>>q;
+    while(q--)
+    {
+        cin>>s1>>s2;
+        x=M[s1];
+        y=M[s2];
+        cout<<D[x][y]<<endl;;
+        cout<<y<<"<-";
+        while(B[x][y]!=x)
+        {
+            cout<<B[x][y]<<"<-";
+            y=B[x][y];
+        }
+        cout<<x<<endl;
+    }
+
+
+  /*  loop(i,0,n)
+     loop(j,0,n)
+      if(D[i][j]!=LONG_MAX)
+        cout<<i<<" "<<j<<" "<<D[i][j]<<endl;
+*/
+
+}

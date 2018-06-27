@@ -1,0 +1,71 @@
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+struct comp
+{
+    bool operator()(pll a,pll b)
+    {
+        if(a.sec>b.sec)
+            return 1;
+        return 0;
+    }
+};
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll n,m,x,y,w,i;
+
+    cin>>n>>m;
+    ll temp[n+1];
+    vector<pll> A[m+1];
+    loop(i,1,n+1)
+    temp[i]=LLONG_MAX;
+    loop(i,0,m)
+    {
+        cin>>x>>y>>w;
+        A[x].pb(mkp(y,w));
+
+        //A[y].pb(mkp(x,w));
+    }
+    priority_queue<pll,vector<pll>,comp> q;
+    ll V[n+1]={0};
+    temp[1]=0;
+    q.push(mkp(1,0));
+    while(!q.empty())
+    {
+        x=q.top().fir;
+        q.pop();
+        if(V[x])
+         continue;
+        V[x]=1;
+        loop(i,0,A[x].size())
+        {
+            y=A[x][i].fir;
+           //if(V[y]==0)
+            {temp[y]=min(temp[y],temp[x]+A[x][i].sec);
+            q.push(mkp(y,temp[y]));
+            //V[y]=1;
+            }
+        }
+    }
+    loop(i,2,n+1)
+     cout<<temp[i]<<" ";
+}
