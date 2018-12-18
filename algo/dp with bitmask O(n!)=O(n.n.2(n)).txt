@@ -1,0 +1,93 @@
+// spoj histogram
+
+#include<bits/stdc++.h>
+using namespace std;
+/*
+#include<boost/multiprecision/cpp_int.hpp>
+namespace mp=boost::multiprecision;
+using namespace mp;*/
+//cpp_int
+
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(long long i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+#define take(t) ll t;cin>>t;while(t--)
+#define en "\n"
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+ll M[17][1<<17];
+ll T[17][1<<17];
+ll c=0;
+ll func(ll A[],ll n,ll cur,ll mask)
+{
+    if(M[cur][mask]!=-1)
+        return M[cur][mask];
+    else
+    {
+        loop(i,0,n)
+        if((mask& 1<<i)==0)
+        {
+            if((mask|(1<<i))==((1<<n)-1))
+            {M[cur][mask]=abs(A[i]-A[cur])+A[i];
+            T[cur][mask]=1;
+            return M[cur][mask];
+            }
+
+        else
+        {
+            ll val=0;
+            val=func(A,n,i,mask|(1<<i))+abs(A[cur]-A[i]);
+            if(val>M[cur][mask])
+            {
+                T[cur][mask]=0;
+                M[cur][mask]=val;
+            }
+            if(val==M[cur][mask])
+                T[cur][mask]+=T[i][mask|(1<<i)];
+        }
+        }
+
+    return M[cur][mask];
+    }
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    ll n;
+    while(cin>>n)
+    {   ll A[n];
+    memset(M,-1,sizeof(M));
+//        loop(i,0,17)
+//         loop(j,0,(1<<17)-1)
+//          M[i][j]=-1;
+        if(n==0)
+            break;
+        loop(i,0,n)
+         cin>>A[i];
+        ll ans=0;
+        ll c=0;
+        ll max1=0;
+        loop(i,0,n)
+        {
+            ans=max(ans,func(A,n,i,1<<i)+A[i]);
+            if(ans>max1)
+            {
+                max1=ans;
+                c=T[i][1<<i];
+            }
+            else if(ans==max1)
+             c+=T[i][1<<i];
+        }
+        cout<<ans+2*n<<" "<<c<<endl;
+    }
+}

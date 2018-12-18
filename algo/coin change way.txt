@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+#define take(t) ll t;cin>>t;
+ 
+typedef long long ll;
+typedef pair<ll,ll> pll;
+ll n;
+map<pll,ll> M;
+ll func(ll A[],ll c,ll v)
+{
+    if(v==0)
+        return 1;
+    if(v<0)
+        return 0;
+    if(c==n)
+        return 0;
+    if(M.find(mkp(c+1,v))==M.end())
+     M[mkp(c+1,v)]=func(A,c+1,v)%mod;
+    if(M.find(mkp(c,v-A[c]))==M.end())
+     M[mkp(c,v-A[c])]=func(A,c,v-A[c])%mod;
+    return (M[mkp(c+1,v)]+M[mkp(c,v-A[c])])%mod;
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+ 
+    ll v,i;
+    cin>>n>>v;
+    ll A[n];
+    loop(i,0,n)
+     cin>>A[i];
+   // sort(A,A+n,greater<ll>());
+    cout<<func(A,0,v)<<endl;
+}

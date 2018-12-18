@@ -1,0 +1,76 @@
+#include<bits/stdc++.h>
+using namespace std;
+/*
+#include<boost/multiprecision/cpp_int.hpp>
+namespace mp=boost::multiprecision;
+using namespace mp;*/
+//cpp_int
+
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(long long i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+#define take(t) ll t;cin>>t;while(t--)
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+ll B[100],s;
+void update(ll A[],ll x,ll v)
+{
+    ll y=x/s;
+    B[y]=B[y]-A[x]+v;
+    A[x]=v;
+}
+void func(ll A[],ll n)
+{
+    ll j=-1;
+    s=sqrt(n);
+    loop(i,0,n)
+    {
+
+        if(i%s==0)
+            j++;
+        B[j]+=A[i];
+    }
+}
+
+ll query(ll A[],ll l,ll r)
+{
+    ll sum=0;
+    while(l<r && l%s!=0 && l!=0)
+    {
+        sum+=A[l];
+        l++;
+    }
+    while(l+s<=r)
+    {
+        sum+=B[l/s];
+        l+=s;
+    }
+    while(l<=r)
+    {
+        sum+=A[l];
+        l++;
+    }
+    return sum;
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll n;
+    cin>>n;
+    ll A[n];
+    loop(i,0,n)
+     cin>>A[i];
+    func(A,n);
+    cout<<query(A,1,4);
+}

@@ -1,0 +1,79 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(long long i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+#define take(t) ll t;cin>>t;while(t--)
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+stack<ll> s;
+ll V[16]={0};
+ll c=0;
+void dfs(vector<ll> A[],ll x)
+{
+    V[x]=1;
+    loop(i,0,A[x].size())
+
+     {  ll y=A[x][i];
+         if(!V[A[x][i]])
+        dfs(A,A[x][i]);
+
+     }
+     s.push(x);
+}
+vector<ll> ans;
+void dfs2(vector<ll> B[],ll x)
+{
+    V[x]=1;ans.pb(x);
+    loop(i,0,B[x].size())
+    {ll y=B[x][i];
+        if(!V[B[x][i]])
+        dfs2(B,B[x][i]);
+    }
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll n,m,a,b;
+    cin>>n>>m;
+    vector<ll> A[n+1],B[n+1];
+    loop(i,0,m)
+    {
+        cin>>a>>b;
+        A[a].pb(b);
+        B[b].pb(a);
+    }
+    loop(i,1,n+1)
+     if(!V[i])
+        dfs(A,i);
+    mem(V);
+    while(!s.empty())
+    {
+        a=s.top();
+        s.pop();
+        if(!V[a])
+        {
+            ans.clear();
+            dfs2(B,a);
+            ll asas=ans.size();
+            loop(i,0,ans.size())
+         cout<<ans[i]<<" ";
+         cout<<endl;
+
+        }
+    }
+    //cout<<ans<<endl;
+
+}

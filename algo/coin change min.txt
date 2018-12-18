@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+#define take(t) ll t;cin>>t;
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+ll M[1000]={0};
+ll func(ll A[],ll n,ll v)
+{
+    if(v==0)
+        return 0;
+    if(v<0)
+     return LONG_MAX;
+
+    ll x,i;
+    if(M[v]==0)
+    {M[v]=LONG_MAX;
+    loop(i,0,n)
+    {
+        if(A[i]<=v)
+            x=func(A,n,v-A[i])+1;
+        M[v]=min(M[v],x);
+    }
+    }
+    return M[v];
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll v,n,i;
+    cin>>v>>n;
+    ll A[n];
+    loop(i,0,n)
+     cin>>A[i];
+   // sort(A,A+n,greater<ll>());
+   loop(i,0,v+1)
+    cout<<i<<" "<<func(A,n,i)<<endl;
+    loop(i,0,v+1)
+     cout<<i<<" "<<M[i]<<"\n";
+}

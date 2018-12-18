@@ -1,0 +1,74 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(long long i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+#define take(t) ll t;cin>>t;while(t--)
+
+typedef long long ll;
+typedef pair<ll,ll> pll;
+
+ll B[11],A[11][11],flag=0;
+void nex(ll k,ll n)
+{
+    do
+    {
+        B[k]=(B[k]+1)%(n+1);
+        if(B[k]==0)
+            return;
+        if(A[B[k-1]][B[k]])
+        {ll i;
+            for( i=1;i<k;i++)
+                if(B[i]==B[k])
+                 break;
+            if(i==k)
+                return ;
+        }
+    }while(1);
+}
+void hamil(ll n,ll k)
+{
+    do
+     {nex(k,n);
+     if(B[k]==0)
+        return;
+     if(k==n)
+     {
+         flag=1;
+         return;
+     }
+     else
+        hamil(n,k+1);
+     }while(1);
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    ll n,m,x,y;
+    cin>>n>>m;
+    mem(A);
+    loop(i,0,m)
+    {
+        cin>>x>>y;
+        x++;y++;
+        A[x][y]=1;
+        A[y][x]=1;
+    }
+    B[1]=1;
+    hamil(n,2);
+    if(flag)
+        cout<<"YES\n";
+    else
+        cout<<"NO\n";
+
+
+}

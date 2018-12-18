@@ -1,0 +1,112 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define mem(A) memset(A,0,sizeof(A))
+#define loop(i,a,n) for(long long i=a;i<n;i++)
+#define pb push_back
+#define mkp make_pair
+#define prq priority_queue
+#define fir first
+#define sec second
+#define all(A) A.begin(),A.end()
+#define mod 1000000007
+#define take(t) ll t;cin>>t;while(t--)
+ 
+typedef long long ll;
+typedef pair<ll,ll> pll;
+ll c=0;
+ll V[11],o=0,e=0,L[11],T[11],P[11],C[11];
+set<ll> S;
+stack<pll> s;
+void dfs(vector<ll> A[],ll x)
+{
+    V[x]=1;
+    L[x]=T[x]=c++;
+ 
+    loop(i,0,A[x].size())
+    {
+       ll y=A[x][i];
+       if(y!=P[x])
+       {
+           if(!V[y])
+           {
+             C[x]++;
+             P[y]=x;
+             if(x<y)
+                s.push(mkp(x,y));
+             else
+                s.push(mkp(y,x));
+             dfs(A,y);
+             L[x]=min(L[x],L[y]);
+             if((P[x]==-1 && C[x]>1) || (P[x]!=-1 && L[y]>=T[x]) )
+                {
+                    ll a,b;
+                    if(x<y) a=x,b=y;
+                    else a=y,b=x;
+                    while(s.top()!=mkp(a,b))
+                    {
+                        S.insert(s.top().fir);
+                        S.insert(s.top().sec);
+                        s.pop();
+                    }
+                    S.insert(s.top().fir);
+                    S.insert(s.top().sec);
+                    s.pop();
+                  /*  for(auto it:S)
+                        cout<<it<<endl;
+                    cout<<endl;*/
+                    if(S.size()&1)
+                     o++;
+                    else
+                     e++;
+                    S.clear();
+                }
+ 
+           }
+           else
+           {
+               L[x]=min(L[y],L[x]);
+              /* if(x<y)
+                s.push(mkp(x,y));
+               else
+                s.push(mkp(y,x));*/
+           }
+       }
+    }
+}
+int main()
+{   //freopen("input.txt", "r", stdin);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    cout.tie(NULL);
+ 
+    ll n,m,a,b;
+    cin>>n>>m;
+    vector<ll> A[n];
+    loop(i,0,m)
+    {
+        cin>>a>>b;
+        A[a].pb(b);
+        A[b].pb(a);
+    }
+    loop(i,0,n)
+    {P[i]=-1;
+    dfs(A,i);
+    S.clear();
+    while(!s.empty())
+    {
+        S.insert(s.top().fir);
+        S.insert(s.top().sec);
+        s.pop();
+    }
+    if(!S.empty())
+        if(S.size()&1)
+         o++;
+        else
+            e++;
+    }
+    cout<<o<<" "<<e;
+    /*
+    for(auto it:S)
+        cout<<it<<endl;*/
+}
