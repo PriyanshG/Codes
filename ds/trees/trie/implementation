@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long 
+#define loop(i,a,b) for(ll i=a;i<b;i++)
+
+struct trinode
+{
+	trinode *ch[26];
+	ll ans;
+	bool END;
+};
+trinode *getnode()
+{
+	ll i;
+	trinode *pnode=new trinode;
+	pnode->END=0;
+	pnode->ans=-1;
+	loop(i,0,26)
+	 pnode->ch[i]=NULL;
+	return pnode;
+}
+
+void insert(trinode *root,string k,ll x)
+{
+	ll i;
+	trinode *pcrawl = root;
+	loop(i,0,k.size())
+	{
+		char ch=k[i]-'a';
+		ll index=k[i]-'a';
+		pcrawl->ans=max(x,pcrawl->ans);
+		if(!pcrawl->ch[index])
+			pcrawl->ch[index]=getnode();
+		pcrawl=pcrawl->ch[index];
+	}
+	pcrawl->END=true;
+}
+
+void search(trinode *root,string s)
+{
+	ll i;
+	bool flag=1;
+	trinode *pcrawl=root;
+	loop(i,0,s.length())
+	{
+		if(!pcrawl->ch[s[i]-'a'])
+			flag=0;
+		else
+			pcrawl=pcrawl->ch[s[i]-'a'];
+	}
+	if(flag)
+		cout<<pcrawl->ans<<endl;
+	else
+	 cout<<-1<<endl;
+}
+
+int main()
+{
+	ios_base::sync_with_stdio(0);
+
+	ll n,i,q,x;
+	string s;
+	trinode *root=getnode();
+	cin>>n>>q;
+	loop(i,0,n)
+	{
+		cin>>s>>x;
+		insert(root,s,x);
+	}
+	while(q--)
+	{
+		cin>>s;
+		search(root,s);
+	}
+}
+ 

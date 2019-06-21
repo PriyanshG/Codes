@@ -27,7 +27,7 @@ long find(long node,long s,long e,long x,long y)
         return 0;
     if(U[node]!=0)
     {
-        T[node]+=(e-s+1)*U[node];
+        T[node]+=j:(e-s+1)*U[node];
         if(s!=e)
         {
             U[2*node]+=U[node];

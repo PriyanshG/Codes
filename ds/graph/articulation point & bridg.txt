@@ -1,0 +1,84 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define ll long long
+#define pll pair<ll,ll>
+#define loop(i,a,b) for(ll i=a;i<b;i++)
+#define pb push_back
+ll c=0;
+ 
+ll P[100005]={0};
+ll C[100005]={0};
+ll T[100005]={0};
+ll V[100005]={0};
+ll L[100005]={0};
+set<ll> ans;
+set<pll> ans1;
+ 
+void dfs(vector<ll> A[],ll x)
+{
+	V[x]=1;
+	L[x]=T[x]=c++;
+	for(ll i=0;i<A[x].size();i++)
+	{
+		ll y=A[x][i];
+		if(P[x]!=y)
+		{
+			if(!V[y])
+			{
+				C[x]++;
+				P[y]=x;
+				dfs(A,y);
+ 
+				//C[x]+=C[y];
+				if(P[x]!=-1 && T[x]<=L[y])
+					ans.insert(x);
+				if(T[x]<L[y])
+				{if(x<y)
+				    ans1.insert({x,y});
+				else
+				ans1.insert({y,x});
+				}
+ 
+					L[x]=min(L[x],L[y]);
+ 
+			}
+			else
+				L[x]=min(L[x],T[y]);
+		}
+	}
+}
+ 
+ 
+int main()
+{
+	ll n,m,x,y;
+	cin>>n>>m;
+	vector<ll> A[n+1];
+	loop(i,0,m)
+	{
+		cin>>x>>y;
+		A[x].pb(y);
+		A[y].pb(x);
+	}
+	for(ll i=1;i<n+1;i++)
+	{
+		P[i]=-1;
+		if(!V[i])
+		{
+			dfs(A,i);
+		}
+		if(C[i]>=2)
+			ans.insert(i);
+ 
+	}
+	cout<<ans.size()<<endl;
+	for(auto it:ans)
+		cout<<it<<" ";
+	cout<<endl;
+	cout<<ans1.size()<<endl;
+	for(auto it:ans1)
+		cout<<it.first<<" "<<it.second<<endl;
+ 
+}
+ 
